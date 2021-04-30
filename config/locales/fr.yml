@@ -37,6 +37,11 @@ fr:
       name: Formulaire de vérification d'identité - Nancy
     nancy_authorization_workflow:
       name: Procédure d'autorisation
+    system:
+      organizations:
+        smtp_settings:
+          fieldsets:
+            sender: Expéditeur
     verifications:
       authorizations:
         first_login:
@@ -65,3 +70,6 @@ fr:
         not_found_in_database: "%{authentication_keys} ou mot de passe invalide."
         timeout: Votre session a expiré. Veuillez vous connecter à nouveau pour continuer.
         unauthenticated: Vous devez vous connecter ou vous inscrire avant de continuer.
+  faker:
+    address:
+      country_code: ['FR','FR0','FR1','FR2','FR3','FR4','FR5','FR6','FR7','FR8','FR9']
