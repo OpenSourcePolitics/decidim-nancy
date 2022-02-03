@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # This migration comes from decidim_proposals (originally 20200708091228)
 
 class MoveProposalsFieldsToI18n < ActiveRecord::Migration[5.2]
@@ -26,9 +27,10 @@ class MoveProposalsFieldsToI18n < ActiveRecord::Migration[5.2]
         proposal.new_body = {
           locale => proposal.body
         }
-
+        # rubocop:disable Rails/SkipsModelValidations
         proposal.update_column("new_title", proposal.new_title)
         proposal.update_column("new_body", proposal.new_body)
+        # rubocop:enable Rails/SkipsModelValidations
       end
     end
 
