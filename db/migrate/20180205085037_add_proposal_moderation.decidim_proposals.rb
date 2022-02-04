@@ -7,7 +7,7 @@ class AddProposalModeration < ActiveRecord::Migration[5.1]
 
     Decidim::Proposals::Proposal.all.each { |p| Decidim::Moderation.find_or_create_by!(reportable: p, participatory_space: p.feature.participatory_space, upstream_moderation: "authorized") }
 
-    Decidim::Moderation.all.each { |m| m.update(upstream_moderation: "authorized")}
+    Decidim::Moderation.all.each { |m| m.update(upstream_moderation: "authorized") }
   end
 
   def down; end
