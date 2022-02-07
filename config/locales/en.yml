@@ -1,5 +1,20 @@
 ---
 en:
+  decidim:
+    meetings:
+      directory:
+        meetings:
+          index:
+            all: All
+      meeting:
+        not_allowed: Not allowed
+      meetings:
+        create:
+          invalid: Invalid
+          success: Success
+        update:
+          invalid: Invalid
+          success: Success
   layouts:
     decidim:
       footer:
