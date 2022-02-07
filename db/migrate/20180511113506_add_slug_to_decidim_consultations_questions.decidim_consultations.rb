@@ -9,8 +9,10 @@ class AddSlugToDecidimConsultationsQuestions < ActiveRecord::Migration[5.1]
   def change
     add_column :decidim_consultations_questions,
                :decidim_organization_id,
-               :integer
-    add_index :decidim_consultations_questions, :decidim_organization_id, name: "index_decidim_questions_on_decidim_organization_id"
+               :integer,
+               index: {
+                 name: "index_decidim_questions_on_decidim_organization_id"
+               }
 
     add_column :decidim_consultations_questions, :slug, :string
 
