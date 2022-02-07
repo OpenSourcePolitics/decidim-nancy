@@ -41,7 +41,7 @@ module ProposalSerializerExtends
 
   def authors_id
     authors = proposal.authors.map do |author|
-      author.class.name == "Decidim::Organization" ? "Official" : author.id
+      author.instance_of?(Decidim::Organization) ? "Official" : author.id
     end
 
     return authors.first if authors.one?
