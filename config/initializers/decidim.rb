@@ -1,18 +1,9 @@
 # frozen_string_literal: true
 
 Decidim.configure do |config|
-
-  config.release = {
-    commit: `git rev-parse --short HEAD`.strip,
-    branch: `git rev-parse --abbrev-ref HEAD`.strip,
-    repo: `basename \`git rev-parse --show-toplevel\``.strip
-  }
-
-
   config.skip_first_login_authorization = ENV["SKIP_FIRST_LOGIN_AUTHORIZATION"] ? ActiveRecord::Type::Boolean.new.cast(ENV["SKIP_FIRST_LOGIN_AUTHORIZATION"]) : true
-  config.application_name = "Ville de Nancy"
-  config.mailer_sender = "Ville de Nancy <ne-pas-repondre@opensourcepolitics.eu>"
-  # config.mailer_sender = "Ville de Nancy <web@mairie-nancy.fr>"
+  config.application_name = "OSP Agora"
+  config.mailer_sender = "OSP Agora <ne-pas-repondre@opensourcepolitics.eu>"
 
   # Change these lines to set your preferred locales
   config.default_locale = :fr
@@ -21,12 +12,14 @@ Decidim.configure do |config|
   config.maximum_attachment_height_or_width = 6000
 
   # Geocoder configuration
-  if !Rails.application.secrets.geocoder[:here_api_key].blank?
-    config.geocoder = {
-        static_map_url: "https://image.maps.ls.hereapi.com/mia/1.6/mapview",
-        here_api_key: Rails.application.secrets.geocoder[:here_api_key]
+  config.maps = {
+    provider: :here,
+    api_key: Rails.application.secrets.maps[:api_key],
+    static: { url: "https://image.maps.ls.hereapi.com/mia/1.6/mapview" },
+    autocomplete: {
+      address_format: [%w(houseNumber street), "city", "country"]
     }
-  end
+  }
 
   if defined?(Decidim::Initiatives) && defined?(Decidim::Initiatives.do_not_require_authorization)
     # puts "Decidim::Initiatives are loaded"
@@ -35,12 +28,6 @@ Decidim.configure do |config|
     Decidim::Initiatives.print_enabled = false
     Decidim::Initiatives.face_to_face_voting_allowed = false
   end
-
-
-  if Decidim.geocoder.present?
-    Geocoder::Configuration.timeout = 15
-  end
-
 
   # Custom resource reference generator method
   # config.resource_reference_generator = lambda do |resource, feature|
@@ -98,7 +85,7 @@ Decidim.configure do |config|
   # Decidim docs at docs/services/etherpad.md in order to set it up.
   #
 
-  if !Rails.application.secrets.etherpad[:server].blank?
+  if Rails.application.secrets.etherpad[:server].present?
     config.etherpad = {
       server: Rails.application.secrets.etherpad[:server],
       api_key: Rails.application.secrets.etherpad[:api_key],
@@ -106,9 +93,7 @@ Decidim.configure do |config|
     }
   end
 
-  if ENV["HEROKU_APP_NAME"].present?
-    config.base_uploads_path = ENV["HEROKU_APP_NAME"] + "/"
-  end
+  config.base_uploads_path = "#{ENV["HEROKU_APP_NAME"]}/" if ENV["HEROKU_APP_NAME"].present?
 end
 
 Rails.application.config.i18n.available_locales = Decidim.available_locales

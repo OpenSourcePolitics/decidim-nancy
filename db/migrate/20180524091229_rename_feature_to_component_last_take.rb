@@ -23,30 +23,21 @@ class RenameFeatureToComponentLastTake < ActiveRecord::Migration[5.1]
     end
 
     # rubocop:disable Rails/SkipsModelValidations
-<<<<<<< Updated upstream
-    if Version.table_exists?
-      Version.where(item_type: "Decidim::Feature").update_all(item_type: "Decidim::Component")
-    end
-    if ActionLog.table_exists?
-      ActionLog.where(resource_type: "Decidim::Feature").update_all(resource_type: "Decidim::Component")
-      # rubocop:enable Rails/SkipsModelValidations
-=======
     Version.where(item_type: "Decidim::Feature").update_all(item_type: "Decidim::Component")
     ActionLog.where(resource_type: "Decidim::Feature").update_all(resource_type: "Decidim::Component")
     Notification.where(decidim_resource_type: "Decidim::Feature").update_all(decidim_resource_type: "Decidim::Component")
     Notification.where(event_class: "Decidim::FeaturePublishedEvent").update_all(event_class: "Decidim::ComponentPublishedEvent")
     Notification.where(event_name: "decidim.events.features.feature_published").update_all(event_name: "decidim.events.components.component_published")
     # rubocop:enable Rails/SkipsModelValidations
->>>>>>> Stashed changes
 
-      ActionLog.find_each do |log|
-        new_extra = log.extra.dup
-        next if new_extra["component"].present?
-        new_extra["component"] = new_extra["feature"]
-        new_extra.delete("feature")
-        log.extra = new_extra
-        log.save!
-      end
+    ActionLog.find_each do |log|
+      new_extra = log.extra.dup
+      next if new_extra["component"].present?
+
+      new_extra["component"] = new_extra["feature"]
+      new_extra.delete("feature")
+      log.extra = new_extra
+      log.save!
     end
   end
 end
