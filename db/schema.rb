@@ -1082,6 +1082,7 @@ ActiveRecord::Schema.define(version: 2022_02_03_172612) do
     t.string "id_documents_methods", default: ["online"], array: true
     t.jsonb "id_documents_explanation_text", default: {}
     t.boolean "user_groups_enabled", default: false, null: false
+    t.jsonb "colors", default: {}
     t.jsonb "smtp_settings"
     t.string "deepl_api_key"
     t.boolean "force_users_to_authenticate_before_access_organization", default: false
@@ -1090,7 +1091,6 @@ ActiveRecord::Schema.define(version: 2022_02_03_172612) do
     t.boolean "rich_text_editor_in_public_views", default: false
     t.jsonb "admin_terms_of_use_body"
     t.string "time_zone", limit: 255, default: "UTC"
-    t.jsonb "colors", default: {}
     t.boolean "enable_machine_translations", default: false
     t.jsonb "file_upload_settings"
     t.string "machine_translation_display_priority", default: "original", null: false
@@ -1135,9 +1135,9 @@ ActiveRecord::Schema.define(version: 2022_02_03_172612) do
     t.datetime "updated_at", null: false
     t.boolean "active", default: false
     t.integer "position"
+    t.jsonb "action_btn_text"
     t.jsonb "cta_text", default: {}
     t.string "cta_path"
-    t.jsonb "action_btn_text"
     t.index ["decidim_participatory_process_id", "active"], name: "unique_index_to_avoid_duplicate_active_steps", unique: true, where: "(active = true)"
     t.index ["decidim_participatory_process_id", "position"], name: "index_unique_position_for_process", unique: true
     t.index ["decidim_participatory_process_id"], name: "index_decidim_processes_steps__on_decidim_process_id"
